@@ -33,9 +33,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      # Make sure the gradlew file is executable (important for CI/CD)
+      - name: Ensure gradlew is executable
+        run: chmod +x gradlew
+
       # Build the Android app using Gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assembleDebug  # Specifically builds the debug APK
 
       # Upload the APK as an artifact
       - name: Upload APK
