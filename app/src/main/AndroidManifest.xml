@@ -9,7 +9,8 @@
         <!-- Declare the Accessibility Service -->
         <service
             android:name=".MyAccessibilityService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true"> <!-- Set exported to true or false -->
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
