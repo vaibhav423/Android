@@ -2,15 +2,23 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 33  // Update if necessary
+
     defaultConfig {
         applicationId "com.example.androidaccessibilityintentapp"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion 21  // You can adjust this based on your app requirements
+        targetSdkVersion 33  // Again, ensure this is appropriate for your app
         versionCode 1
         versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false  // Set to true if you're using ProGuard or R8
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.5.1'  // This should be fine unless you need a newer version
 }
