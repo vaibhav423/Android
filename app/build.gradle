@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.androidaccessibilityintentapp"
-        minSdkVersion 21  // You can adjust this based on your app requirements
+        minSdkVersion 31  // You can adjust this based on your app requirements
         targetSdkVersion 33  // Again, ensure this is appropriate for your app
         versionCode 1
         versionName "1.0"
