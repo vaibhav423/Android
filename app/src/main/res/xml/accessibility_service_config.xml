@@ -3,5 +3,4 @@
     android:accessibilityEventTypes="typeAllMask"
     android:packageNames="com.example.androidaccessibilityintentapp"
     android:notificationTimeout="100"
-    android:accessibilityFeedbackType="feedbackAllMask"
-    android:notificationTimeout="100" />
+    android:accessibilityFeedbackType="feedbackAllMask" />
