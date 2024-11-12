@@ -17,11 +17,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up JDK
+      # Set up JDK (Ensure the distribution is provided)
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'adoptopenjdk'  # Ensure the distribution is provided
+
+      # Cache Gradle dependencies to speed up builds (Optional)
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       # Build the Android app using Gradle
       - name: Build with Gradle
