@@ -4,8 +4,10 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityButtonController;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
 
 public class MyAccessibilityService extends AccessibilityService {
 
@@ -38,6 +40,9 @@ public class MyAccessibilityService extends AccessibilityService {
 
                         // Send a broadcast when the accessibility button is pressed
                         sendBroadcastWithAction();
+
+                        // Show a Toast notification as feedback to the user
+                        showToast("Intent sent!");
                     }
 
                     @Override
@@ -61,12 +66,17 @@ public class MyAccessibilityService extends AccessibilityService {
         // Create an Intent with a custom action 'abcd'
         Intent intent = new Intent("abcd");
 
-        
-
         // Send the broadcast
         sendBroadcast(intent);
 
         Log.d("MY_APP_TAG", "Broadcast intent with action 'abcd' sent!");
+    }
+
+    // Method to show a Toast message
+    private void showToast(String message) {
+        // Using a Handler to show Toast from the main thread
+        Handler handler = new Handler(getMainLooper());
+        handler.post(() -> Toast.makeText(MyAccessibilityService.this, message, Toast.LENGTH_SHORT).show());
     }
 
     @Override
