@@ -3,6 +3,7 @@ import android.accessibilityservice.AccessibilityButtonController;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
 import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
 
 public class MyAccessibilityService extends AccessibilityService {
 
@@ -15,6 +16,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
         // Initialize the accessibility button controller
         mAccessibilityButtonController = getAccessibilityButtonController();
+
         if (mAccessibilityButtonController != null) {
             mIsAccessibilityButtonAvailable = mAccessibilityButtonController.isAccessibilityButtonAvailable();
 
@@ -73,6 +75,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        // Handle any other accessibility events
+        // Handle any other accessibility events (you can log the event or process it here)
+        Log.d("MY_APP_TAG", "Accessibility event received: " + event.toString());
     }
 }
