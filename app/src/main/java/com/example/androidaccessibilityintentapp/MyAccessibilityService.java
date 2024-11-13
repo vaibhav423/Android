@@ -1,3 +1,5 @@
+package com.example.androidaccessibilityintentapp;
+
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityButtonController;
 import android.accessibilityservice.AccessibilityServiceInfo;
