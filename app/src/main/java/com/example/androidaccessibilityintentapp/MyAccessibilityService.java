@@ -61,8 +61,7 @@ public class MyAccessibilityService extends AccessibilityService {
         // Create an Intent with a custom action 'abcd'
         Intent intent = new Intent("abcd");
 
-        // Optionally, add some extras
-        intent.putExtra("extra_key", "extra_value");
+        
 
         // Send the broadcast
         sendBroadcast(intent);
