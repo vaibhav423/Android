@@ -1,69 +1,72 @@
-import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityButtonController
-import android.accessibilityservice.AccessibilityServiceInfo
-import android.content.Intent
-import android.util.Log
+import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.AccessibilityButtonController;
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Intent;
+import android.util.Log;
 
-class MyAccessibilityService : AccessibilityService() {
+public class MyAccessibilityService extends AccessibilityService {
 
-    private var mAccessibilityButtonController: AccessibilityButtonController? = null
-    private var mIsAccessibilityButtonAvailable: Boolean = false
+    private AccessibilityButtonController mAccessibilityButtonController;
+    private boolean mIsAccessibilityButtonAvailable = false;
 
-    override fun onServiceConnected() {
-        super.onServiceConnected()
+    @Override
+    public void onServiceConnected() {
+        super.onServiceConnected();
 
-        mAccessibilityButtonController = accessibilityButtonController
-        mIsAccessibilityButtonAvailable = mAccessibilityButtonController?.isAccessibilityButtonAvailable ?: false
+        // Initialize the accessibility button controller
+        mAccessibilityButtonController = getAccessibilityButtonController();
+        mIsAccessibilityButtonAvailable = mAccessibilityButtonController != null && mAccessibilityButtonController.isAccessibilityButtonAvailable();
 
         // Only proceed if the accessibility button is available
         if (mIsAccessibilityButtonAvailable) {
             // Set up the accessibility service to request the accessibility button
-            val serviceInfo = AccessibilityServiceInfo().apply {
-                flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON
-            }
-            serviceInfo = serviceInfo.apply {
-                flags = flags or AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON
-            }
+            AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
+            serviceInfo.flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
+            setServiceInfo(serviceInfo);
 
-            // Register callback for when accessibility button is clicked
-            val accessibilityButtonCallback = object : AccessibilityButtonController.AccessibilityButtonCallback() {
-                override fun onClicked(controller: AccessibilityButtonController) {
+            // Register callback for when the accessibility button is clicked
+            AccessibilityButtonController.AccessibilityButtonCallback accessibilityButtonCallback = new AccessibilityButtonController.AccessibilityButtonCallback() {
+                @Override
+                public void onClicked(AccessibilityButtonController controller) {
                     // Handle the button click event
-                    Log.d("MY_APP_TAG", "Accessibility button pressed!")
+                    Log.d("MY_APP_TAG", "Accessibility button pressed!");
 
                     // Send a broadcast when the accessibility button is pressed
-                    sendBroadcastWithAction()
+                    sendBroadcastWithAction();
                 }
 
-                override fun onAvailabilityChanged(controller: AccessibilityButtonController, available: Boolean) {
-                    mIsAccessibilityButtonAvailable = available
+                @Override
+                public void onAvailabilityChanged(AccessibilityButtonController controller, boolean available) {
+                    mIsAccessibilityButtonAvailable = available;
                 }
-            }
+            };
 
             // Register callback
-            mAccessibilityButtonController?.registerAccessibilityButtonCallback(accessibilityButtonCallback, null)
+            mAccessibilityButtonController.registerAccessibilityButtonCallback(accessibilityButtonCallback, null);
         }
     }
 
     // Method to send the broadcast when the accessibility button is clicked
-    private fun sendBroadcastWithAction() {
+    private void sendBroadcastWithAction() {
         // Create an Intent with a custom action 'abcd'
-        val intent = Intent("abcd")
+        Intent intent = new Intent("abcd");
 
         // Optionally, add some extras
-        intent.putExtra("extra_key", "extra_value")
+        intent.putExtra("extra_key", "extra_value");
 
         // Send the broadcast
-        sendBroadcast(intent)
+        sendBroadcast(intent);
 
-        Log.d("MY_APP_TAG", "Broadcast intent with action 'abcd' sent!")
+        Log.d("MY_APP_TAG", "Broadcast intent with action 'abcd' sent!");
     }
 
-    override fun onInterrupt() {
+    @Override
+    public void onInterrupt() {
         // Handle interrupt if needed (e.g., stop service)
     }
 
-    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent event) {
         // Handle any other accessibility events
     }
 }
