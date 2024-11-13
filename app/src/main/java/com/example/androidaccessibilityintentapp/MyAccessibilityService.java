@@ -18,11 +18,15 @@ public class MyAccessibilityService extends AccessibilityService {
     public void onServiceConnected() {
         super.onServiceConnected();
 
+        Log.d("MY_APP_TAG", "Service Connected");
+
         // Initialize the accessibility button controller
         mAccessibilityButtonController = getAccessibilityButtonController();
 
         if (mAccessibilityButtonController != null) {
             mIsAccessibilityButtonAvailable = mAccessibilityButtonController.isAccessibilityButtonAvailable();
+
+            Log.d("MY_APP_TAG", "Accessibility button available: " + mIsAccessibilityButtonAvailable);
 
             // Only proceed if the accessibility button is available
             if (mIsAccessibilityButtonAvailable) {
@@ -48,6 +52,7 @@ public class MyAccessibilityService extends AccessibilityService {
                     @Override
                     public void onAvailabilityChanged(AccessibilityButtonController controller, boolean available) {
                         mIsAccessibilityButtonAvailable = available;
+                        Log.d("MY_APP_TAG", "Accessibility button availability changed: " + available);
                     }
                 };
 
@@ -76,17 +81,26 @@ public class MyAccessibilityService extends AccessibilityService {
     private void showToast(String message) {
         // Using a Handler to show Toast from the main thread
         Handler handler = new Handler(getMainLooper());
-        handler.post(() -> Toast.makeText(MyAccessibilityService.this, message, Toast.LENGTH_SHORT).show());
+        handler.post(() -> {
+            Toast.makeText(MyAccessibilityService.this, message, Toast.LENGTH_SHORT).show();
+            Log.d("MY_APP_TAG", "Toast displayed: " + message);
+        });
     }
 
     @Override
     public void onInterrupt() {
         // Handle interrupt if needed (e.g., stop service)
+        Log.d("MY_APP_TAG", "Service interrupted");
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         // Handle any other accessibility events (you can log the event or process it here)
         Log.d("MY_APP_TAG", "Accessibility event received: " + event.toString());
+
+        // If event type is related to window content, log it for clarity
+        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+            Log.d("MY_APP_TAG", "Window content changed: " + event.getPackageName());
+        }
     }
 }
