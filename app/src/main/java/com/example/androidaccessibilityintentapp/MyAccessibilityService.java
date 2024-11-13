@@ -15,34 +15,40 @@ public class MyAccessibilityService extends AccessibilityService {
 
         // Initialize the accessibility button controller
         mAccessibilityButtonController = getAccessibilityButtonController();
-        mIsAccessibilityButtonAvailable = mAccessibilityButtonController != null && mAccessibilityButtonController.isAccessibilityButtonAvailable();
+        if (mAccessibilityButtonController != null) {
+            mIsAccessibilityButtonAvailable = mAccessibilityButtonController.isAccessibilityButtonAvailable();
 
-        // Only proceed if the accessibility button is available
-        if (mIsAccessibilityButtonAvailable) {
-            // Set up the accessibility service to request the accessibility button
-            AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
-            serviceInfo.flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
-            setServiceInfo(serviceInfo);
+            // Only proceed if the accessibility button is available
+            if (mIsAccessibilityButtonAvailable) {
+                // Set up the accessibility service to request the accessibility button
+                AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
+                serviceInfo.flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
+                setServiceInfo(serviceInfo);
 
-            // Register callback for when the accessibility button is clicked
-            AccessibilityButtonController.AccessibilityButtonCallback accessibilityButtonCallback = new AccessibilityButtonController.AccessibilityButtonCallback() {
-                @Override
-                public void onClicked(AccessibilityButtonController controller) {
-                    // Handle the button click event
-                    Log.d("MY_APP_TAG", "Accessibility button pressed!");
+                // Register callback for when the accessibility button is clicked
+                AccessibilityButtonController.AccessibilityButtonCallback accessibilityButtonCallback = new AccessibilityButtonController.AccessibilityButtonCallback() {
+                    @Override
+                    public void onClicked(AccessibilityButtonController controller) {
+                        // Handle the button click event
+                        Log.d("MY_APP_TAG", "Accessibility button pressed!");
 
-                    // Send a broadcast when the accessibility button is pressed
-                    sendBroadcastWithAction();
-                }
+                        // Send a broadcast when the accessibility button is pressed
+                        sendBroadcastWithAction();
+                    }
 
-                @Override
-                public void onAvailabilityChanged(AccessibilityButtonController controller, boolean available) {
-                    mIsAccessibilityButtonAvailable = available;
-                }
-            };
+                    @Override
+                    public void onAvailabilityChanged(AccessibilityButtonController controller, boolean available) {
+                        mIsAccessibilityButtonAvailable = available;
+                    }
+                };
 
-            // Register callback
-            mAccessibilityButtonController.registerAccessibilityButtonCallback(accessibilityButtonCallback, null);
+                // Register callback
+                mAccessibilityButtonController.registerAccessibilityButtonCallback(accessibilityButtonCallback, null);
+            } else {
+                Log.e("MY_APP_TAG", "Accessibility button not available on this device.");
+            }
+        } else {
+            Log.e("MY_APP_TAG", "Failed to get AccessibilityButtonController.");
         }
     }
 
