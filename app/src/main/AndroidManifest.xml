@@ -4,13 +4,12 @@
 
     <application
         android:label="Accessibility Intent App">
-        <!-- android:icon="@mipmap/ic_launcher" -->
-        
         <!-- Declare the Accessibility Service -->
         <service
-            android:name=".MyAccessibilityService"
+            android:name="com.example.androidaccessibilityintentapp.MyAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="true"> <!-- Set exported to true or false -->
+            android:exported="true"> <!-- Set exported to true -->
+
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
