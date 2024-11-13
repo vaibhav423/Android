@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33  // Update if necessary
+    compileSdkVersion 34  // Update if necessary
 
     defaultConfig {
         applicationId "com.example.androidaccessibilityintentapp"
         minSdkVersion 31  // You can adjust this based on your app requirements
-        targetSdkVersion 33  // Again, ensure this is appropriate for your app
+        targetSdkVersion 34  // Again, ensure this is appropriate for your app
         versionCode 1
         versionName "1.0"
     }
@@ -20,5 +20,5 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.5.1'  // This should be fine unless you need a newer version
+    implementation 'androidx.appcompat:appcompat:1.6.0'  // This should be fine unless you need a newer version
 }
