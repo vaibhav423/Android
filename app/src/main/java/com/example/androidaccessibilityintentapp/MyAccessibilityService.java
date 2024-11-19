@@ -10,18 +10,21 @@ import android.widget.Toast;
 
 public class MyAccessibilityService extends AccessibilityService {
 
+    private static final String TAG = "MyAccessibilityService";
     private AccessibilityButtonController mAccessibilityButtonController;
 
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+        Log.d(TAG, "Service connected");
 
         // Initialize the accessibility button controller
         mAccessibilityButtonController = getAccessibilityButtonController();
 
         if (mAccessibilityButtonController != null && 
             mAccessibilityButtonController.isAccessibilityButtonAvailable()) {
-            
+            Log.d(TAG, "Accessibility button is available");
+
             // Set up the accessibility service to request the accessibility button
             AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
             serviceInfo.flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
@@ -31,9 +34,12 @@ public class MyAccessibilityService extends AccessibilityService {
             mAccessibilityButtonController.registerAccessibilityButtonCallback(new AccessibilityButtonController.AccessibilityButtonCallback() {
                 @Override
                 public void onClicked(AccessibilityButtonController controller) {
+                    Log.d(TAG, "Accessibility button clicked");
                     showToast("Accessibility button pressed!");
                 }
             }, null);
+        } else {
+            Log.d(TAG, "Accessibility button is not available");
         }
     }
 
@@ -46,11 +52,11 @@ public class MyAccessibilityService extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
-        // Handle interrupt if needed
+        Log.d(TAG, "Service interrupted");
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        // Optional: Handle other accessibility events if needed
+        Log.d(TAG, "Accessibility event received: " + event.toString());
     }
 }
