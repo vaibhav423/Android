@@ -38,6 +38,9 @@ public class MyAccessibilityService extends AccessibilityService {
                     showToast("Accessibility button pressed!");
                 }
             }, null);
+
+            // Add this log to confirm registration
+            Log.d(TAG, "AccessibilityButtonCallback registered");
         } else {
             Log.d(TAG, "Accessibility button is not available");
         }
