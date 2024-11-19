@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.os.Handler;
 import android.util.Log;
+import android.view.accessibility.AccessibilityEvent; // <-- Added this import
 import android.widget.Toast;
 
 public class MyAccessibilityService extends AccessibilityService {
@@ -32,6 +33,7 @@ public class MyAccessibilityService extends AccessibilityService {
             mAccessibilityButtonController.registerAccessibilityButtonCallback(new AccessibilityButtonController.AccessibilityButtonCallback() {
                 @Override
                 public void onClicked(AccessibilityButtonController controller) {
+                    // Log only when the accessibility button is clicked
                     Log.d(TAG, "Accessibility button clicked");
                     showToast("Accessibility button clicked!");
                 }
@@ -60,6 +62,6 @@ public class MyAccessibilityService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.d(TAG, "Accessibility event received: " + event.toString());
+        // Do not log any other events, only the button click is important
     }
 }
