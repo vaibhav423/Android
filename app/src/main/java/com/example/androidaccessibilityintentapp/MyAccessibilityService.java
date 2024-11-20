@@ -42,7 +42,7 @@ public class MyAccessibilityService extends AccessibilityService {
     }
 
     private void initializeAccessibilityButtonCallback() {
-        mAccessibilityButtonController = accessibilityButtonController;
+        mAccessibilityButtonController = getAccessibilityButtonController(); // Corrected line
         mIsAccessibilityButtonAvailable = mAccessibilityButtonController.isAccessibilityButtonAvailable();
 
         if (!mIsAccessibilityButtonAvailable) {
