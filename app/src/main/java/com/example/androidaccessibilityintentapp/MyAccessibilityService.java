@@ -1,67 +1,73 @@
-package com.example.androidaccessibilityintentapp;
+package com.example
+.androidaccessibilityintentapp;
 
-import android.accessibilityservice.AccessibilityButtonController;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.os.Handler;
+import android.content.Intent;
 import android.util.Log;
-import android.view.accessibility.AccessibilityEvent; // <-- Added this import
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
-public class MyAccessibilityService extends AccessibilityService {
+import android.accessibilityservice.AccessibilityButtonController;
 
+public class MyAccessibilityService extends AccessibilityService {
     private static final String TAG = "MyAccessibilityService";
+
+    // Accessibility Button variables
     private AccessibilityButtonController mAccessibilityButtonController;
+    private AccessibilityButtonController.AccessibilityButtonCallback mAccessibilityButtonCallback;
+    private boolean mIsAccessibilityButtonAvailable;
 
     @Override
-    public void onServiceConnected() {
-        super.onServiceConnected();
-        Log.d(TAG, "Service connected");
-
-        // Initialize the accessibility button controller
-        mAccessibilityButtonController = getAccessibilityButtonController();
-
-        if (mAccessibilityButtonController != null && mAccessibilityButtonController.isAccessibilityButtonAvailable()) {
-            Log.d(TAG, "Accessibility button is available");
-
-            // Set up the accessibility service to request the accessibility button
-            AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
-            serviceInfo.flags = AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
-            setServiceInfo(serviceInfo);
-
-            // Register callback for when the accessibility button is clicked
-            mAccessibilityButtonController.registerAccessibilityButtonCallback(new AccessibilityButtonController.AccessibilityButtonCallback() {
-                @Override
-                public void onClicked(AccessibilityButtonController controller) {
-                    // Log only when the accessibility button is clicked
-                    Log.d(TAG, "Accessibility button clicked");
-                    showToast("Accessibility button clicked!");
-                }
-            }, null);
-
-            // Add this log to confirm registration
-            Log.d(TAG, "AccessibilityButtonCallback registered");
-        } else {
-            Log.d(TAG, "Accessibility button is not available");
-        }
-    }
-
-    // Method to show a Toast message
-    private void showToast(String message) {
-        // Directly using Toast.makeText to show on the main thread
-        Handler handler = new Handler(getMainLooper());
-        handler.post(() -> {
-            Toast.makeText(MyAccessibilityService.this, message, Toast.LENGTH_SHORT).show();
-        });
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+        // ... (Other event handling if needed) ...
     }
 
     @Override
     public void onInterrupt() {
-        Log.d(TAG, "Service interrupted");
+        Log.d(TAG, "
+Accessibility Service Interrupted");
     }
 
     @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
-        // Do not log any other events, only the button click is important
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+        AccessibilityServiceInfo info = getServiceInfo();
+        // Set flags and event types as before...
+
+        // Request the Accessibility Button:
+        info.flags = info.flags | AccessibilityServiceInfo.FLAG_REQUEST_ACCESSIBILITY_BUTTON;
+
+        // ... other service configuration ...
+
+        // Initialize Accessibility Button Callback:
+        initializeAccessibilityButtonCallback();
+    }
+
+    private void initializeAccessibilityButtonCallback() {
+        mAccessibilityButtonController = accessibilityButtonController;
+        mIsAccessibilityButtonAvailable = mAccessibilityButtonController.isAccessibilityButtonAvailable();
+
+        if (!mIsAccessibilityButtonAvailable) {
+            return; // If the button isn't available, do nothing
+        }
+
+        mAccessibilityButtonCallback = new AccessibilityButtonController.AccessibilityButtonCallback() {
+            @Override
+            public void onClicked(AccessibilityButtonController controller) {
+                Log.d(TAG, "Accessibility Shortcut button pressed!");
+                // Action to perform when the Accessibility Shortcut button is clicked:
+                Toast.makeText(getApplicationContext(), "Accessibility Shortcut Clicked!", Toast.LENGTH_SHORT).
+show();
+            }
+
+            @Override
+            public void onAvailabilityChanged(AccessibilityButtonController controller, boolean available) {
+                mIsAccessibilityButtonAvailable = available;
+                Log.d(TAG, "Accessibility button availability changed: " + available);
+            }
+        };
+
+        mAccessibilityButtonController.registerAccessibilityButtonCallback(mAccessibilityButtonCallback);
     }
 }
